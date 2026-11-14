@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,4 +18,10 @@ public interface ConsumptionRecordRepository extends JpaRepository<ConsumptionRe
     List<ConsumptionRecord> findBetweenMealDates(@Param("from") LocalDate from, @Param("to") LocalDate to);
 
     List<ConsumptionRecord> findByMealIdIn(Collection<Long> mealIds);
+
+    @Query("select r from ConsumptionRecord r join Meal m on m.id = r.mealId "
+            + "where r.dishId = :dishId and m.mealDate < :before "
+            + "order by m.mealDate desc, r.recordedAt desc")
+    List<ConsumptionRecord> findRecentByDishIdBefore(@Param("dishId") Long dishId,
+            @Param("before") LocalDate before, Pageable pageable);
 }

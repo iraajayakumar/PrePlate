@@ -194,9 +194,11 @@ public class DemoDataSeeder implements ApplicationRunner {
                 if (forecast == null) {
                     continue;
                 }
-                int prepared = (int) Math.round(forecast.getRecommendedPreparation() * (1 + random.nextDouble() * 0.05));
+                int prepared = (int) Math.round(forecast.getRecommendedPreparation().doubleValue()
+                        * (1 + random.nextDouble() * 0.05));
                 int consumedQuantity = Math.min(prepared,
-                        (int) Math.round(forecast.getPredictedDemand() * (0.80 + random.nextDouble() * 0.20)));
+                        (int) Math.round(forecast.getPredictedDemand().doubleValue()
+                                * (0.80 + random.nextDouble() * 0.20)));
                 consumptionRows.add(new ConsumptionRecord(meal.getId(), dish.getId(),
                         forecast.getRecommendedPreparation(), prepared, consumedQuantity, clock.instant()));
             }

@@ -11,6 +11,7 @@ import com.preplate.meal.entity.Dish;
 import com.preplate.meal.entity.Meal;
 import com.preplate.meal.repository.MealRepository;
 import java.time.Clock;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -67,7 +68,7 @@ public class ConsumptionService {
         List<ConsumptionRecord> saved = new ArrayList<>();
         for (ConsumptionInput input : request.records()) {
             DishForecast forecast = forecastByDish.get(input.dishId());
-            Integer recommended = forecast == null ? null : forecast.getRecommendedPreparation();
+            BigDecimal recommended = forecast == null ? null : forecast.getRecommendedPreparation();
             ConsumptionRecord record = records.findByMealIdAndDishId(meal.getId(), input.dishId())
                     .orElseGet(() -> new ConsumptionRecord(meal.getId(), input.dishId(), recommended,
                             input.preparedQuantity(), input.consumedQuantity(), clock.instant()));

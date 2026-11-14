@@ -37,6 +37,14 @@ public class MealForecast {
     private String explanationJson;
     @Column(name = "generated_at", nullable = false)
     private Instant generatedAt;
+    @Column(name = "model_version", length = 60)
+    private String modelVersion;
+    @Column(name = "forecast_method", length = 20)
+    private String forecastMethod;
+    @Column(name = "data_source", length = 20)
+    private String dataSource;
+    @Column(name = "fallback_reason", length = 100)
+    private String fallbackReason;
 
     protected MealForecast() {
     }
@@ -44,6 +52,14 @@ public class MealForecast {
     public MealForecast(Long mealId, int predictedAttendance, int lowerBound, int upperBound,
             BigDecimal confidence, int recommendedPreparation, ForecastSource source,
             String explanationJson, Instant generatedAt) {
+        this(mealId, predictedAttendance, lowerBound, upperBound, confidence, recommendedPreparation,
+                source, explanationJson, generatedAt, null, null, null, null);
+    }
+
+    public MealForecast(Long mealId, int predictedAttendance, int lowerBound, int upperBound,
+            BigDecimal confidence, int recommendedPreparation, ForecastSource source,
+            String explanationJson, Instant generatedAt, String modelVersion, String forecastMethod,
+            String dataSource, String fallbackReason) {
         this.mealId = mealId;
         this.predictedAttendance = predictedAttendance;
         this.lowerBound = lowerBound;
@@ -53,6 +69,10 @@ public class MealForecast {
         this.source = source;
         this.explanationJson = explanationJson;
         this.generatedAt = generatedAt;
+        this.modelVersion = modelVersion;
+        this.forecastMethod = forecastMethod;
+        this.dataSource = dataSource;
+        this.fallbackReason = fallbackReason;
     }
 
     public Long getId() { return id; }
@@ -65,4 +85,8 @@ public class MealForecast {
     public ForecastSource getSource() { return source; }
     public String getExplanationJson() { return explanationJson; }
     public Instant getGeneratedAt() { return generatedAt; }
+    public String getModelVersion() { return modelVersion; }
+    public String getForecastMethod() { return forecastMethod; }
+    public String getDataSource() { return dataSource; }
+    public String getFallbackReason() { return fallbackReason; }
 }

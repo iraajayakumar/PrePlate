@@ -14,6 +14,7 @@ import jakarta.validation.constraints.Size;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.math.BigDecimal;
 import java.util.List;
 
 public final class ApiDtos {
@@ -119,11 +120,23 @@ public final class ApiDtos {
     }
 
     public record ForecastResponse(int predictedAttendance, int lowerBound, int upperBound, double confidence,
-            int recommendedPreparation, ForecastSource source, Instant generatedAt, List<ForecastFactor> factors) {
+            int recommendedPreparation, ForecastSource source, Instant generatedAt, List<ForecastFactor> factors,
+            String modelVersion, String forecastMethod, String dataSource, String fallbackReason) {
+        public ForecastResponse(int predictedAttendance, int lowerBound, int upperBound, double confidence,
+                int recommendedPreparation, ForecastSource source, Instant generatedAt, List<ForecastFactor> factors) {
+            this(predictedAttendance, lowerBound, upperBound, confidence, recommendedPreparation, source,
+                    generatedAt, factors, null, null, null, null);
+        }
     }
 
-    public record DishForecastResponse(Long dishId, String dishName, int studentInterest, int predictedDemand,
-            int recommendedPreparation) {
+    public record DishForecastResponse(Long dishId, String dishName, int studentInterest, BigDecimal predictedDemand,
+            BigDecimal recommendedPreparation, String unit, String method, String note,
+            BigDecimal intervalLower, BigDecimal intervalUpper) {
+        public DishForecastResponse(Long dishId, String dishName, int studentInterest, int predictedDemand,
+                int recommendedPreparation) {
+            this(dishId, dishName, studentInterest, BigDecimal.valueOf(predictedDemand),
+                    BigDecimal.valueOf(recommendedPreparation), null, null, null, null, null);
+        }
     }
 
     public record DashboardResponse(boolean mealExists, Long mealId, LocalDate mealDate, MealType mealType,
@@ -138,7 +151,7 @@ public final class ApiDtos {
     public record SaveConsumptionRequest(@NotNull Long mealId, @NotNull @NotEmpty List<ConsumptionInput> records) {
     }
 
-    public record ConsumptionRecordResponse(Long dishId, String dishName, Integer recommendedQuantity,
+    public record ConsumptionRecordResponse(Long dishId, String dishName, BigDecimal recommendedQuantity,
             Integer preparedQuantity, Integer consumedQuantity) {
     }
 

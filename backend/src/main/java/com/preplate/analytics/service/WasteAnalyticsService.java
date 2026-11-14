@@ -60,7 +60,7 @@ public class WasteAnalyticsService {
         for (ConsumptionRecord row : rows) {
             DishForecast forecast = forecastByKey.get(key(row.getMealId(), row.getDishId()));
             if (forecast != null) {
-                comparisons.add(new WasteMetrics.ForecastComparison(forecast.getPredictedDemand(),
+                comparisons.add(new WasteMetrics.ForecastComparison(forecast.getPredictedDemand().doubleValue(),
                         row.getConsumedQuantity()));
             }
         }

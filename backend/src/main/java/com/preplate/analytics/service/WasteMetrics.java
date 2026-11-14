@@ -25,6 +25,6 @@ public final class WasteMetrics {
         return Math.round(value * 10.0) / 10.0;
     }
 
-    public record ForecastComparison(int predictedDemand, int consumedQuantity) {
+    public record ForecastComparison(double predictedDemand, int consumedQuantity) {
     }
 }
