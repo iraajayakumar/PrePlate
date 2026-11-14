@@ -11,6 +11,14 @@ import { MEAL_LABELS } from '../../utils/constants';
 import { formatClockTime, toIsoDate } from '../../utils/formatters';
 
 const nf = (n) => (n ?? 0).toLocaleString('en-IN');
+const nq = (n) => (n ?? 0).toLocaleString('en-IN', { maximumFractionDigits: 2 });
+
+// How the forecast was produced. Never show a fallback as if it were the trained model.
+const SOURCE_LABELS = {
+  ML_SERVICE: 'Trained ML model',
+  ML_FALLBACK: 'ML service statistical fallback',
+  HEURISTIC: 'Built-in estimate (ML service unavailable)',
+};
 
 export default function AdminDashboardPage() {
   const queryClient = useQueryClient();
@@ -89,12 +97,25 @@ export default function AdminDashboardPage() {
                     </div>
                   </div>
                   <div className="mt-4">
-                    <div className="flex justify-between text-xs font-medium"><span>Confidence</span><span>{Math.round(f.confidence * 100)}%</span></div>
+                    <div className="flex justify-between text-xs font-medium"><span>Prediction interval coverage</span><span>{Math.round(f.confidence * 100)}%</span></div>
                     <div className="h-3 bg-white"><div className="h-3 bg-sage" style={{ width: `${f.confidence * 100}%` }} /></div>
                   </div>
                   <p className="mt-3 text-xs text-ink/70">
-                    Source: <strong>{f.source === 'ML_SERVICE' ? 'ML forecasting service' : 'Historical-average fallback'}</strong> · generated at {formatClockTime(f.generatedAt)}
+                    Source: <strong>{SOURCE_LABELS[f.source] ?? f.source}</strong>
+                    {f.modelVersion && <> · model <code>{f.modelVersion}</code></>}
+                    {' '}· generated at {formatClockTime(f.generatedAt)}
                   </p>
+                  {f.dataSource === 'synthetic' && f.source === 'ML_SERVICE' && (
+                    <p className="mt-2 bg-white/80 p-2 text-xs font-medium text-brick">Demo forecast: the model is trained on synthetic data.</p>
+                  )}
+                  {f.source !== 'ML_SERVICE' && (
+                    <p role="status" className="mt-2 bg-white/80 p-2 text-xs font-medium text-brick">
+                      {f.source === 'HEURISTIC'
+                        ? 'Forecast service is temporarily unavailable. Showing the built-in estimate instead.'
+                        : 'The ML service used its statistical fallback for this meal.'}
+                      {f.fallbackReason && <span className="font-normal"> (reason: {f.fallbackReason})</span>}
+                    </p>
+                  )}
                 </>
               ) : <p className="mt-3 text-sm">No forecast available yet.</p>}
             </section>
@@ -138,19 +159,30 @@ export default function AdminDashboardPage() {
                 <tbody>
                   {d.dishes.map((row) => (
                     <tr key={row.dishId} className="border-t border-forest/20 even:bg-cream/60">
-                      <td className="p-3 font-medium">{row.dishName}</td>
+                      <td className="p-3 font-medium">
+                        {row.dishName}
+                        {row.method === 'fallback' && !row.note && <span className="ml-2 text-xs font-normal text-ink/60">(fallback estimate)</span>}
+                      </td>
                       <td className="p-3 text-right tabular-nums">{nf(row.studentInterest)}</td>
-                      <td className="p-3 text-right tabular-nums">{nf(row.predictedDemand)}</td>
-                      <td className="p-3 text-right font-semibold tabular-nums text-brick">{nf(row.recommendedPreparation)}</td>
+                      {row.note ? (
+                        <td colSpan={2} className="p-3 text-right text-sm font-medium text-brick" title={row.note}>
+                          Not enough history. Use a manual estimate.
+                        </td>
+                      ) : (
+                        <>
+                          <td className="p-3 text-right tabular-nums">{nq(row.predictedDemand)} {row.unit}</td>
+                          <td className="p-3 text-right font-semibold tabular-nums text-brick">{nq(row.recommendedPreparation)} {row.unit}</td>
+                        </>
+                      )}
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-            <p className="mt-2 text-xs text-ink/60">Interest and predicted demand are separate on purpose: a student not picking a dish does not mean they will not eat it.</p>
+            <p className="mt-2 text-xs text-ink/60">Interest and predicted demand are separate on purpose: a student not picking a dish does not mean they will not eat it. Recommended preparation already includes the safety buffer.</p>
             <div className="mt-5 border-2 border-forest bg-white p-4">
               <ResponsiveContainer width="100%" height={280}>
-                <BarChart data={d.dishes}>
+                <BarChart data={d.dishes.filter((x) => !x.note)}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="dishName" tick={{ fontSize: 11 }} interval={0} angle={-20} textAnchor="end" height={60} />
                   <YAxis /><Tooltip /><Legend verticalAlign="top" />
