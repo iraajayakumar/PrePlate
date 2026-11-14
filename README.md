@@ -18,7 +18,7 @@ Students mark meal attendance and dish preferences. Kitchen admins get demand fo
 
 1. Install Java 17 or newer and MySQL 8.
 2. Create the `preplate_db` database and run [`database/schema.sql`](./database/schema.sql), followed by [`database/seed.sql`](./database/seed.sql), using your MySQL client.
-3. In `backend/`, copy `src/main/resources/application-local.properties.example` to `src/main/resources/application-local.properties` and set your MySQL username and password. This local file is git-ignored.
+3. In `backend/`, copy `src/main/resources/application.properties.example` to `src/main/resources/application.properties`. Set MySQL credentials through `DB_USERNAME` and `DB_PASSWORD` environment variables, or copy `src/main/resources/application-local.properties.example` to `src/main/resources/application-local.properties` and set them there. Both local files are git-ignored.
 4. Start the backend from `backend/`:
 
    ```powershell

@@ -6,6 +6,7 @@ target/
 .env.*
 !.env.example
 application-local.properties
+/backend/src/main/resources/application.properties
 *.log
 .idea/
 *.iml
