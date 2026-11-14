@@ -2,7 +2,7 @@
 
 The backend is a modular monolith: a single deployable Spring Boot application organized into modules for user/auth, meal, intelligence (demand forecasting), analytics (including waste), along with notification and fact.
 
-The demand forecasting function is intentionally separated into a standalone ML service that receives HTTP calls and can gracefully fall back to a historical-average heuristic when unavailable. The React frontend talks only to the backend over REST/JSON APIs.
+The demand forecasting function is intentionally separated into a standalone ML service. The dashboard and refresh endpoints cause the backend to assemble attendance, completed-meal history, dish interest/popularity, and historical consumption, then POST the request to `/forecast/details`. The backend validates and stores the returned meal and dish forecasts (including provenance, units, intervals, and diagnostics) before returning the dashboard to the UI. When history is insufficient or the service is unavailable, the backend persists its own heuristic forecast and records the reason.
 
 MySQL is the single database for the system.
 
@@ -10,7 +10,10 @@ ASCII flow:
 
 Student -> React UI -> REST API -> Spring Boot modules -> MySQL
 
-Spring Boot -> (HTTP) -> Forecast service (optional)
+Admin dashboard/refresh -> ForecastService -> MlForecastClient -> POST /forecast/details -> forecast-service
+                                                   -> validate and store forecast rows -> dashboard response -> UI
+
+ForecastService -> backend heuristic (skipped/unavailable/invalid ML response)
 
 ## Why not microservices?
 

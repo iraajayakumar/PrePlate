@@ -49,7 +49,7 @@ Errors use this shape:
 | DELETE | `/admin/meals/{mealId}` | Admin | Deletes a meal and returns a message. |
 | GET | `/admin/dashboard?mealDate=YYYY-MM-DD&mealType=DINNER` | Admin | Returns response totals and forecast for the selected meal; forecast is generated if absent. |
 | POST | `/admin/forecasts/{mealId}/refresh` | Admin | Regenerates the forecast and returns the dashboard. |
-| GET | `/admin/consumption/{mealId}` | Admin | Gets dish-level preparation and consumption quantities. |
+| GET | `/admin/consumption/{mealId}` | Admin | Gets dish-level preparation and consumption quantities; `recommendedQuantity` is a decimal or `null`. |
 | POST | `/admin/consumption` | Admin | Saves `mealId` and non-empty `records`, each with `dishId`, `preparedQuantity`, and `consumedQuantity`. |
 | GET | `/admin/analytics/waste?days=14` | Admin | Returns waste totals, daily trend, and breakdowns by meal type and dish. |
 
@@ -57,4 +57,8 @@ Meal types are `BREAKFAST`, `LUNCH`, `SNACKS`, and `DINNER`. Missing/invalid req
 
 ## Forecast service integration
 
-Forecasting uses the backend heuristic by default. To enable the optional ML service, set `preplate.forecast.enabled=true` and configure `preplate.forecast.base-url` and `preplate.forecast.timeout-ms`. If the ML call fails or returns an invalid response, the backend logs the failure and falls back to the heuristic forecast.
+Forecasting calls the ML service by default. Configure `preplate.forecast.enabled`, `preplate.forecast.base-url`, `preplate.forecast.timeout-ms`, and `preplate.forecast.item-unit` as needed. If history is insufficient, the request is invalid, or the ML call fails or returns an invalid response, the backend records the reason and uses its heuristic forecast.
+
+The backend sends eligible-student counts, all four response groups, up to 14 completed same-type meal history points, and per-dish interest, popularity, consumption average, and unit to `POST /forecast/details`. An insufficient completed history or invalid count set skips the remote call. Timeouts, service errors, and invalid responses produce a persisted `HEURISTIC` forecast with a `fallbackReason`.
+
+The dashboard forecast contains the existing attendance values plus `modelVersion`, `forecastMethod`, `dataSource`, and `fallbackReason`. `source` is `ML_SERVICE`, `ML_FALLBACK` (the ML service returned its statistical fallback), or `HEURISTIC` (the backend's own fallback). `confidence` represents the service's target prediction-interval coverage, not a probability that the point estimate is correct. Dish demand and preparation quantities are JSON numbers with up to two decimal places. Dish forecast values also include `unit`, `method`, `note`, `intervalLower`, and `intervalUpper`; the ML service's recommended dish quantity already includes its preparation buffer.
