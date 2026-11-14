@@ -16,7 +16,19 @@ Students mark meal attendance and dish preferences. Kitchen admins get demand fo
 
 ## Getting started
 
-Detailed setup steps will be added later in [docs/](./docs/).
+1. Install Java 17 or newer and MySQL 8.
+2. Create the `preplate_db` database and run [`database/schema.sql`](./database/schema.sql), followed by [`database/seed.sql`](./database/seed.sql), using your MySQL client.
+3. In `backend/`, copy `src/main/resources/application-local.properties.example` to `src/main/resources/application-local.properties` and set your MySQL username and password. This local file is git-ignored.
+4. Start the backend from `backend/`:
+
+   ```powershell
+   .\mvnw.cmd -Dspring-boot.run.profiles=local spring-boot:run
+   ```
+
+   The API is available at `http://localhost:8080/api`. The frontend runs at `http://localhost:5173` and is allowed by the default CORS configuration.
+5. Start the frontend separately using the instructions in [`frontend/`](./frontend/).
+
+On its first run, the backend seeds demo users and menu data when the database has been initialized with the supplied SQL scripts. The demo admin is `ADMIN001` / `admin123`; demo students use `student123`. These credentials are for local development only. See [`docs/API.md`](./docs/API.md) for routes and [`docs/TESTING.md`](./docs/TESTING.md) to run tests.
 
 ## Tech stack
 

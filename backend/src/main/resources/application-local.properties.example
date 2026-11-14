@@ -1,0 +1,3 @@
+# Copy to application-local.properties (gitignored) and run with -Dspring-boot.run.profiles=local
+spring.datasource.username=root
+spring.datasource.password=YOUR_MYSQL_PASSWORD
