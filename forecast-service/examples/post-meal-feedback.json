@@ -1,0 +1,53 @@
+{
+  "meal_date": "2026-11-13",
+  "request": {
+    "meal_id": 142,
+    "meal_type": "lunch",
+    "day_of_week": 4,
+    "eligible_students": 5000,
+    "responses": {
+      "yes": 3100,
+      "no": 600,
+      "unsure": 400,
+      "no_response": 900
+    },
+    "historical": {
+      "avg_attendance": 3650,
+      "avg_waste_percentage": 6.2
+    },
+    "dishes": [
+      {
+        "dish_id": 12,
+        "student_interest": 2600,
+        "historical_popularity": 0.82,
+        "avg_consumption_quantity": 205,
+        "unit": "kg"
+      }
+    ]
+  },
+  "forecast": {
+    "meal_id": 142,
+    "predicted_attendance": 3807,
+    "dish_forecasts": [
+      {
+        "dish_id": 12,
+        "predicted_quantity": 243.96,
+        "recommended_quantity": 256.16,
+        "unit": "kg"
+      }
+    ],
+    "model_version": "preplate-ml-v1-e1581e0c93",
+    "forecast_method": "ml"
+  },
+  "actual_attendance": 3812,
+  "dishes": [
+    {
+      "dish_id": 12,
+      "unit": "kg",
+      "actual_prepared_quantity": 256.16,
+      "actual_consumed_quantity": 243.32,
+      "actual_leftover_quantity": 12.84,
+      "stockout": false
+    }
+  ]
+}

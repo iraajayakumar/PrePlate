@@ -1,0 +1,366 @@
+{
+  "version": "preplate-ml-v1-e1581e0c93",
+  "data_source": "synthetic",
+  "input_sha256": {
+    "attendance.csv": "63bf6d556b5db51298664ab0ef704dcbf92ef69f81046d9b63d8cdf232b1a2b5",
+    "dish_demand.csv": "cb84636406cefc873068698af3dc64042b2af9efaf158ddef4bf24ea490b085d"
+  },
+  "dependencies": {
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "pandas": "2.2.3",
+    "scikit-learn": "1.8.0",
+    "joblib": "1.5.3",
+    "xgboost": "3.4.1"
+  },
+  "splits": {
+    "train": {
+      "start": "2025-01-01",
+      "end": "2025-09-09",
+      "days": 252
+    },
+    "validation": {
+      "start": "2025-09-10",
+      "end": "2025-11-11",
+      "days": 63
+    },
+    "calibration": {
+      "start": "2025-11-12",
+      "end": "2025-12-23",
+      "days": 42
+    },
+    "test": {
+      "start": "2025-12-24",
+      "end": "2026-02-24",
+      "days": 63
+    }
+  },
+  "rows": {
+    "meals": 1680,
+    "dishes": 7117,
+    "excluded_stockouts": 0
+  },
+  "attendance": {
+    "selected": "linear_regression",
+    "selection_metric": "MAE (students)",
+    "validation": {
+      "historical_average": {
+        "n": 252,
+        "mae": 253.9841,
+        "rmse": 313.2249,
+        "mape_percent": 8.7828,
+        "mape_n": 252
+      },
+      "statistical_fallback": {
+        "n": 252,
+        "mae": 146.2778,
+        "rmse": 182.4033,
+        "mape_percent": 5.1606,
+        "mape_n": 252
+      },
+      "linear_regression": {
+        "n": 252,
+        "mae": 72.0278,
+        "rmse": 89.9227,
+        "mape_percent": 2.532,
+        "mape_n": 252
+      },
+      "random_forest": {
+        "n": 252,
+        "mae": 78.6984,
+        "rmse": 107.2483,
+        "mape_percent": 2.702,
+        "mape_n": 252
+      },
+      "xgboost": {
+        "n": 252,
+        "mae": 73.7659,
+        "rmse": 94.7607,
+        "mape_percent": 2.5452,
+        "mape_n": 252
+      }
+    },
+    "test": {
+      "historical_average": {
+        "n": 252,
+        "mae": 264.5437,
+        "rmse": 342.6637,
+        "mape_percent": 9.6663,
+        "mape_n": 252
+      },
+      "statistical_fallback": {
+        "n": 252,
+        "mae": 170.4921,
+        "rmse": 216.7421,
+        "mape_percent": 6.3344,
+        "mape_n": 252
+      },
+      "linear_regression": {
+        "n": 252,
+        "mae": 74.0913,
+        "rmse": 95.1043,
+        "mape_percent": 2.7156,
+        "mape_n": 252
+      },
+      "random_forest": {
+        "n": 252,
+        "mae": 77.5437,
+        "rmse": 101.7345,
+        "mape_percent": 2.8676,
+        "mape_n": 252
+      },
+      "xgboost": {
+        "n": 252,
+        "mae": 72.623,
+        "rmse": 94.5604,
+        "mape_percent": 2.7137,
+        "mape_n": 252
+      }
+    },
+    "interval": {
+      "target_coverage": 0.9,
+      "observed_test_coverage": 0.9008,
+      "n_test": 252,
+      "normalized_radius": 0.033208800332088007
+    },
+    "global_permutation_importance": {
+      "yes_rate": 0.155943,
+      "no_response_rate": 0.060363,
+      "meal_type": 0.001807,
+      "historical_attendance_rate": 0.001183,
+      "day_of_week": 0.000432,
+      "menu_interest_rate": 0.000421,
+      "eligible_students": 0.000157,
+      "unsure_rate": 0.000123,
+      "dish_count": -2e-06,
+      "menu_popularity": -4e-06,
+      "avg_waste_percentage": -8.2e-05
+    }
+  },
+  "dish_demand": {
+    "selected": "linear_regression",
+    "selection_metric": "MAE (consumed / historical average)",
+    "validation": {
+      "historical_average": {
+        "normalized": {
+          "n": 1045,
+          "mae": 0.1353,
+          "rmse": 0.1723,
+          "mape_percent": 13.9982,
+          "mape_n": 1045
+        },
+        "by_unit": {
+          "kg": {
+            "n": 1045,
+            "mae": 28.1471,
+            "rmse": 38.1594,
+            "mape_percent": 13.9982,
+            "mape_n": 1045
+          }
+        },
+        "cold_start_rows": 0
+      },
+      "statistical_fallback": {
+        "normalized": {
+          "n": 1045,
+          "mae": 0.1248,
+          "rmse": 0.1572,
+          "mape_percent": 13.3008,
+          "mape_n": 1045
+        },
+        "by_unit": {
+          "kg": {
+            "n": 1045,
+            "mae": 26.1715,
+            "rmse": 35.8413,
+            "mape_percent": 13.3008,
+            "mape_n": 1045
+          }
+        },
+        "cold_start_rows": 0
+      },
+      "linear_regression": {
+        "normalized": {
+          "n": 1045,
+          "mae": 0.069,
+          "rmse": 0.089,
+          "mape_percent": 7.0092,
+          "mape_n": 1045
+        },
+        "by_unit": {
+          "kg": {
+            "n": 1045,
+            "mae": 14.584,
+            "rmse": 20.4615,
+            "mape_percent": 7.0092,
+            "mape_n": 1045
+          }
+        },
+        "cold_start_rows": 0
+      },
+      "random_forest": {
+        "normalized": {
+          "n": 1045,
+          "mae": 0.0824,
+          "rmse": 0.1053,
+          "mape_percent": 8.3999,
+          "mape_n": 1045
+        },
+        "by_unit": {
+          "kg": {
+            "n": 1045,
+            "mae": 17.4752,
+            "rmse": 24.3683,
+            "mape_percent": 8.3999,
+            "mape_n": 1045
+          }
+        },
+        "cold_start_rows": 0
+      },
+      "xgboost": {
+        "normalized": {
+          "n": 1045,
+          "mae": 0.0724,
+          "rmse": 0.0933,
+          "mape_percent": 7.3363,
+          "mape_n": 1045
+        },
+        "by_unit": {
+          "kg": {
+            "n": 1045,
+            "mae": 15.3703,
+            "rmse": 21.4852,
+            "mape_percent": 7.3363,
+            "mape_n": 1045
+          }
+        },
+        "cold_start_rows": 0
+      }
+    },
+    "test": {
+      "historical_average": {
+        "normalized": {
+          "n": 1037,
+          "mae": 0.1462,
+          "rmse": 0.1843,
+          "mape_percent": 15.9817,
+          "mape_n": 1037
+        },
+        "by_unit": {
+          "kg": {
+            "n": 1037,
+            "mae": 30.1589,
+            "rmse": 40.5928,
+            "mape_percent": 15.9817,
+            "mape_n": 1037
+          }
+        },
+        "cold_start_rows": 0
+      },
+      "statistical_fallback": {
+        "normalized": {
+          "n": 1037,
+          "mae": 0.1312,
+          "rmse": 0.1628,
+          "mape_percent": 14.5975,
+          "mape_n": 1037
+        },
+        "by_unit": {
+          "kg": {
+            "n": 1037,
+            "mae": 27.257,
+            "rmse": 36.5546,
+            "mape_percent": 14.5975,
+            "mape_n": 1037
+          }
+        },
+        "cold_start_rows": 0
+      },
+      "linear_regression": {
+        "normalized": {
+          "n": 1037,
+          "mae": 0.0732,
+          "rmse": 0.092,
+          "mape_percent": 7.6515,
+          "mape_n": 1037
+        },
+        "by_unit": {
+          "kg": {
+            "n": 1037,
+            "mae": 15.5579,
+            "rmse": 22.2397,
+            "mape_percent": 7.6515,
+            "mape_n": 1037
+          }
+        },
+        "cold_start_rows": 0
+      },
+      "random_forest": {
+        "normalized": {
+          "n": 1037,
+          "mae": 0.0814,
+          "rmse": 0.1023,
+          "mape_percent": 8.5786,
+          "mape_n": 1037
+        },
+        "by_unit": {
+          "kg": {
+            "n": 1037,
+            "mae": 17.2776,
+            "rmse": 24.005,
+            "mape_percent": 8.5786,
+            "mape_n": 1037
+          }
+        },
+        "cold_start_rows": 0
+      },
+      "xgboost": {
+        "normalized": {
+          "n": 1037,
+          "mae": 0.0736,
+          "rmse": 0.0917,
+          "mape_percent": 7.6921,
+          "mape_n": 1037
+        },
+        "by_unit": {
+          "kg": {
+            "n": 1037,
+            "mae": 15.7855,
+            "rmse": 21.7502,
+            "mape_percent": 7.6921,
+            "mape_n": 1037
+          }
+        },
+        "cold_start_rows": 0
+      }
+    },
+    "interval": {
+      "target_coverage": 0.9,
+      "observed_test_coverage": 0.8824,
+      "n_test": 1037,
+      "normalized_radius": 0.14069644741470277
+    },
+    "global_permutation_importance": {
+      "dish_interest_rate": 0.127642,
+      "historical_attendance_rate": 0.085657,
+      "yes_rate": 0.06924,
+      "dish_popularity": 0.047019,
+      "no_response_rate": 0.044925,
+      "day_of_week": 0.035462,
+      "meal_type": 0.009894,
+      "eligible_students": 0.001855,
+      "unsure_rate": 0.000692,
+      "avg_waste_percentage": 9.4e-05,
+      "dish_count": 7.3e-05,
+      "menu_popularity": 4.3e-05,
+      "menu_interest_rate": -0.000171
+    }
+  },
+  "observed_test_leftovers_by_unit": {
+    "kg": {
+      "prepared": 235631.59,
+      "leftover": 14234.49,
+      "leftover_percent": 6.04
+    }
+  }
+}

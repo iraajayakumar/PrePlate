@@ -1,0 +1,14 @@
+{
+  "meal_id": 142,
+  "predicted_attendance": 3807,
+  "dish_forecasts": [
+    {
+      "dish_id": 12,
+      "predicted_quantity": 243.96,
+      "recommended_quantity": 256.16,
+      "unit": "kg"
+    }
+  ],
+  "model_version": "preplate-ml-v1-e1581e0c93",
+  "forecast_method": "ml"
+}

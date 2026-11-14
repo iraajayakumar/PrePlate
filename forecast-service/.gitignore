@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+data/feedback.jsonl
+data/observed/
+models/observed/
+reports/observed/
+*.joblib.tmp
+data/demo-feedback.jsonl

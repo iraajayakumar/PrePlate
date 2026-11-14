@@ -1,0 +1,136 @@
+{
+  "info": {
+    "name": "PrePlate ML",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:8000"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/health"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Valid lunch forecast",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/forecast",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"meal_id\": 142,\n  \"meal_type\": \"lunch\",\n  \"day_of_week\": 4,\n  \"eligible_students\": 5000,\n  \"responses\": {\n    \"yes\": 3100,\n    \"no\": 600,\n    \"unsure\": 400,\n    \"no_response\": 900\n  },\n  \"historical\": {\n    \"avg_attendance\": 3650,\n    \"avg_waste_percentage\": 6.2\n  },\n  \"dishes\": [\n    {\n      \"dish_id\": 12,\n      \"student_interest\": 2600,\n      \"historical_popularity\": 0.82,\n      \"avg_consumption_quantity\": 205,\n      \"unit\": \"kg\"\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Known meal and method\", () => {",
+              "  const result = pm.response.json();",
+              "  pm.expect(result.meal_id).to.equal(142);",
+              "  pm.expect(result.forecast_method).to.be.oneOf([\"ml\", \"fallback\"]);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Forecast with diagnostics",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/forecast/details",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"meal_id\": 142,\n  \"meal_type\": \"lunch\",\n  \"day_of_week\": 4,\n  \"eligible_students\": 5000,\n  \"responses\": {\n    \"yes\": 3100,\n    \"no\": 600,\n    \"unsure\": 400,\n    \"no_response\": 900\n  },\n  \"historical\": {\n    \"avg_attendance\": 3650,\n    \"avg_waste_percentage\": 6.2\n  },\n  \"dishes\": [\n    {\n      \"dish_id\": 12,\n      \"student_interest\": 2600,\n      \"historical_popularity\": 0.82,\n      \"avg_consumption_quantity\": 205,\n      \"unit\": \"kg\"\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reject inconsistent response totals",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/forecast",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"meal_id\": 142,\n  \"meal_type\": \"lunch\",\n  \"day_of_week\": 4,\n  \"eligible_students\": 1,\n  \"responses\": {\n    \"yes\": 3100,\n    \"no\": 600,\n    \"unsure\": 400,\n    \"no_response\": 900\n  },\n  \"historical\": {\n    \"avg_attendance\": 3650,\n    \"avg_waste_percentage\": 6.2\n  },\n  \"dishes\": [\n    {\n      \"dish_id\": 12,\n      \"student_interest\": 2600,\n      \"historical_popularity\": 0.82,\n      \"avg_consumption_quantity\": 205,\n      \"unit\": \"kg\"\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status is 422\", () => pm.response.to.have.status(422));"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
