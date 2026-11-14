@@ -1,0 +1,38 @@
+{
+  "forecast": {
+    "meal_id": 142,
+    "predicted_attendance": 3807,
+    "dish_forecasts": [
+      {
+        "dish_id": 12,
+        "predicted_quantity": 243.96,
+        "recommended_quantity": 256.16,
+        "unit": "kg"
+      }
+    ],
+    "model_version": "preplate-ml-v1-e1581e0c93",
+    "forecast_method": "ml"
+  },
+  "data_source": "synthetic",
+  "attendance_algorithm": "linear_regression",
+  "attendance_interval": {
+    "lower": 3640.0,
+    "upper": 3974.0,
+    "target_coverage": 0.9
+  },
+  "dish_details": [
+    {
+      "dish_id": 12,
+      "method": "ml",
+      "algorithm": "linear_regression",
+      "interval": {
+        "lower": 215.11,
+        "upper": 272.81,
+        "target_coverage": 0.9
+      },
+      "buffer_percent": 5.0,
+      "note": null
+    }
+  ],
+  "fallback_reason": null
+}
