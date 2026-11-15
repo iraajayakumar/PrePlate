@@ -9,6 +9,8 @@ describe('DishCard', () => {
   it('shows nutrition info but no add button before attendance is confirmed', () => {
     render(<DishCard dish={dish} canAdd={false} inPlate={false} onToggle={() => {}} />);
     expect(screen.getByText('Paneer Butter Masala')).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: 'Paneer Butter Masala' }))
+      .toHaveAttribute('src', '/assets/dishes/paneer-butter-masala.jpeg');
     expect(screen.getByText('320 kcal')).toBeInTheDocument();
     expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });

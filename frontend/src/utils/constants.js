@@ -46,7 +46,9 @@ export const ASSET_PATHS = {
     DINNER: '/assets/meals/dinner.jpg',
   },
   dishPlaceholder: '/assets/dishes/dish-placeholder.png',
-  dishImage: (imageFile) => (imageFile ? `/assets/dishes/${imageFile}` : '/assets/dishes/dish-placeholder.png'),
+  dishImage: (imageFile) => (imageFile
+    ? `/assets/dishes/${imageFile.replace(/\.jpg$/i, '.jpeg')}`
+    : '/assets/dishes/dish-placeholder.png'),
 };
 
 export const FALLBACK_FACTS = [
