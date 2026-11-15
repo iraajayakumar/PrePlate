@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import DishCard from './DishCard';
 
-const dish = { id: 3, name: 'Paneer Butter Masala', calories: 320, proteinG: 14, carbsG: 12, fatG: 24, vegetarian: true, ingredients: ['Paneer', 'Tomato'] };
+const dish = { id: 3, name: 'Paneer Butter Masala', imageFile: 'paneer-butter-masala.jpg', calories: 320, proteinG: 14, carbsG: 12, fatG: 24, vegetarian: true, ingredients: ['Paneer', 'Tomato'] };
 
 describe('DishCard', () => {
   it('shows nutrition info but no add button before attendance is confirmed', () => {
