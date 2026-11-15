@@ -4,7 +4,7 @@ Know the demand, prepare smarter, waste less.
 
 Students mark meal attendance and dish preferences. Kitchen admins get demand forecasts and recommended preparation quantities. Waste is measured to close the feedback loop.
 
-Live demo: 
+Live URL: https://preplate-frontend.iraajayakumar.workers.dev
 
 ## Monorepo structure
 
