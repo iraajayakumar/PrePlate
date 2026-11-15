@@ -6,7 +6,7 @@ export const UNAUTHORIZED_EVENT = 'preplate:unauthorized';
 
 const axiosClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080/api',
-  timeout: 10000,
+  timeout: 90000,
 });
 
 axiosClient.interceptors.request.use((config) => {
